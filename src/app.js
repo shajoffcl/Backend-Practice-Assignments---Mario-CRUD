@@ -27,13 +27,12 @@ app.get("/mario/:id", (req, res) => {
   let id = req.params.id;
   console.log(id);
   marioModel
-    .findById({ _id: id })
+    .findById(id)
     .then((result) => {
       res.send(result);
     })
     .catch((err) => {
-      console.log(err);
-      res.status(400).send({ message: "error.message" });
+      res.status(400).send({ message: err.message });
     });
 });
 
@@ -51,11 +50,10 @@ app.post("/mario", (req, res) => {
   character
     .save()
     .then((result) => {
-      res.status(201).json(req.body);
+      res.status(201).json(result);
     })
     .catch((err) => {
-      console.log(err);
-      res.send("err");
+      res.send(err);
     });
 });
 
