@@ -13,26 +13,23 @@ app.use(bodyParser.json());
 
 
 app.get("/mario", (req, res) => {
-  marioModel
-    .find()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
+    marioModel.find().then((result)=>{
+        res.send(result);
     });
 });
 
 app.get("/mario/:id", (req, res) => {
   let id = req.params.id;
-  console.log(id);
   marioModel
     .findById(id)
     .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      res.status(400).send({ message: err.message });
+        if(!result){
+            res.status(400).send({"meassage": "error.message"});
+            return;
+        }
+        res.send(result);
+    }).catch(error=>{
+        res.status(404).send(error);
     });
 });
 
@@ -51,9 +48,6 @@ app.post("/mario", (req, res) => {
     .save()
     .then((result) => {
       res.status(201).json(result);
-    })
-    .catch((err) => {
-      res.send(err);
     });
 });
 
